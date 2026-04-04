@@ -21,6 +21,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
+      # 👇 这是你新增的这一段，用来唤醒现代版 Yarn
+      - name: Enable Corepack
+        run: corepack enable
+      # 👆 新增结束  
+
       - name: Setup node env
         uses: actions/setup-node@v3
         with:
