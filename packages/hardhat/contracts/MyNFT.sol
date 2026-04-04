@@ -12,12 +12,12 @@ contract MyNFT is ERC721, Ownable {
 
     function tokenURI(uint256 /* tokenId */) public view virtual override returns (string memory) {
         // 💡 修复点 1：使用 ipfs.io 的 HTTP 公共网关，确保证前端和浏览器能直接打开并读取 JSON！
-        return "https://ipfs.io/ipfs/bafkreic6fbkln63dhn7jd3kogrpmcntvj5vs5qhrrxxp563rwbuom5kuwq"; 
+        return "https://ipfs.io/ipfs/bafkreic6fbkln63dhn7jd3kogrpmcntvj5vs5qhrrxxp563rwbuom5kuwq";
     }
 
     function mint() public payable {
         require(msg.value >= MINT_PRICE, "Not enough ETH");
-        
+
         uint256 tokenId = nextTokenId;
         nextTokenId++;
         _safeMint(msg.sender, tokenId);
@@ -25,7 +25,7 @@ contract MyNFT is ERC721, Ownable {
 
     // 💡 修复点 2：消灭黄色警告，使用现代且安全的 call 方法提款
     function withdraw() public onlyOwner {
-        (bool success, ) = owner().call{value: address(this).balance}("");
+        (bool success, ) = owner().call{ value: address(this).balance }("");
         require(success, "Transfer failed");
     }
 }

@@ -14,14 +14,14 @@ contract BlindBoxNFT is ERC721, Ownable {
 
     // 💡 极客改造 1：记录【Owner是否授权】该盲盒可以被打开
     mapping(uint256 => bool) public isAuthorizedToOpen;
-    
+
     // 💡 极客改造 2：记录【用户是否已经】亲手打开了这个盲盒
     mapping(uint256 => bool) public hasBeenOpened;
 
-    constructor(address initialOwner, string memory _notRevealedUri) 
-        ERC721("Interactive Blind Box", "IBB") 
-        Ownable(initialOwner) 
-    {
+    constructor(
+        address initialOwner,
+        string memory _notRevealedUri
+    ) ERC721("Interactive Blind Box", "IBB") Ownable(initialOwner) {
         notRevealedUri = _notRevealedUri;
     }
 
@@ -65,8 +65,6 @@ contract BlindBoxNFT is ERC721, Ownable {
         }
 
         // 如果用户已经开箱了，拼接展示真实的专属图片
-        return bytes(baseURI).length > 0 
-            ? string(abi.encodePacked(baseURI, tokenId.toString(), ".json")) 
-            : "";
+        return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString(), ".json")) : "";
     }
 }

@@ -39,7 +39,7 @@ contract DEX {
     function balloonToWater(uint256 balloonInput) public returns (uint256 waterOutput) {
         uint256 balloonReserve = balloonToken.balanceOf(address(this));
         uint256 waterReserve = waterToken.balanceOf(address(this));
-        
+
         waterOutput = price(balloonInput, balloonReserve, waterReserve);
 
         require(balloonToken.transferFrom(msg.sender, address(this), balloonInput), "BAL transfer failed");

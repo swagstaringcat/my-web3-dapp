@@ -14,7 +14,7 @@ import "hardhat/console.sol";
  */
 contract YourContract {
     // 1. 去掉了 immutable，这样我们以后才能修改它
-    address public owner; 
+    address public owner;
     string public greeting = "Building Unstoppable Apps!!!";
     bool public premium = false;
     uint256 public totalCounter = 0;
@@ -25,7 +25,7 @@ contract YourContract {
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
 
     constructor() {
-    owner = msg.sender; 
+        owner = msg.sender;
     }
 
     modifier isOwner() {
@@ -41,28 +41,28 @@ contract YourContract {
         totalCounter += 1;
 
         if (totalCounter % 10 == 0) {
-        uint256 currentBalance = address(this).balance;
-        
-        // 1. 💡 增加：庄家抽成 5%
-        uint256 ownerFee = (currentBalance * 5) / 100;
-        (bool feeSuccess, ) = owner.call{value: ownerFee}("");
-        require(feeSuccess, "Fee transfer failed");
+            uint256 currentBalance = address(this).balance;
 
-        // 2. 发放剩余大奖 (95%)
-        uint256 prize = address(this).balance; 
-        (bool success, ) = msg.sender.call{value: prize}("");
-        require(success, "Prize transfer failed");
-        
-        console.log("Winner prize sent! Fee collected:", ownerFee);
-    } else {
-        // 普通返现 10%
-        uint256 cashback = msg.value / 10;
-        (bool success, ) = msg.sender.call{value: cashback}("");
-        require(success, "Cashback failed");
+            // 1. 💡 增加：庄家抽成 5%
+            uint256 ownerFee = (currentBalance * 5) / 100;
+            (bool feeSuccess, ) = owner.call{ value: ownerFee }("");
+            require(feeSuccess, "Fee transfer failed");
+
+            // 2. 发放剩余大奖 (95%)
+            uint256 prize = address(this).balance;
+            (bool success, ) = msg.sender.call{ value: prize }("");
+            require(success, "Prize transfer failed");
+
+            console.log("Winner prize sent! Fee collected:", ownerFee);
+        } else {
+            // 普通返现 10%
+            uint256 cashback = msg.value / 10;
+            (bool success, ) = msg.sender.call{ value: cashback }("");
+            require(success, "Cashback failed");
+        }
+
+        emit GreetingChange(msg.sender, _newGreeting, msg.value > 0, msg.value);
     }
-
-    emit GreetingChange(msg.sender, _newGreeting, msg.value > 0, msg.value);
-}
 
     // --- 功能 B：权限转让 (New!) ---
     function transferOwnership(address newOwner) public isOwner {
@@ -76,7 +76,7 @@ contract YourContract {
     function withdraw() public isOwner {
         uint256 amount = address(this).balance;
         require(amount > 0, "No balance to withdraw");
-        
+
         (bool success, ) = owner.call{ value: amount }("");
         require(success, "Failed to send Ether");
     }

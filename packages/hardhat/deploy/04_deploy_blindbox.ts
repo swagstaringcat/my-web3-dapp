@@ -14,7 +14,7 @@ const deployBlindBoxNFT: DeployFunction = async function (hre: HardhatRuntimeEnv
     // 传入构造函数的两个参数：拥有者地址、神秘箱子 URI
     args: [deployer, MYSTERY_BOX_URI],
     log: true,
-    autoMine: true, 
+    autoMine: true,
   });
 };
 

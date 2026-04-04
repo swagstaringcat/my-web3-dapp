@@ -6,7 +6,7 @@ import type { NextPage } from "next";
 import { formatEther, parseEther } from "viem";
 import { useAccount } from "wagmi";
 // 💡 引入了新的图标 CubeTransparentIcon 用于盲盒
-import { ArrowsRightLeftIcon, PhotoIcon, RocketLaunchIcon, CubeTransparentIcon } from "@heroicons/react/24/outline";
+import { ArrowsRightLeftIcon, CubeTransparentIcon, PhotoIcon, RocketLaunchIcon } from "@heroicons/react/24/outline";
 import { useDeployedContractInfo, useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
 const Home: NextPage = () => {
@@ -110,7 +110,7 @@ const Home: NextPage = () => {
   // 📦 新增：盲盒 (BlindBox) 模块逻辑
   // ==========================================
   const [targetId, setTargetId] = useState("0");
-  
+
   // 💡 注意这里：重命名为 writeBlindBox
   const { writeContractAsync: writeBlindBox } = useScaffoldWriteContract("BlindBoxNFT");
 
@@ -150,7 +150,6 @@ const Home: NextPage = () => {
 
       {/* --- 第一层：基础双核 (NFT + DEX) --- */}
       <div className="flex flex-col md:flex-row justify-center items-stretch gap-10 w-full max-w-5xl mx-auto mb-16">
-        
         {/* 左侧：普通 NFT Mint 卡片 */}
         <div className="flex-1 flex flex-col bg-base-100 shadow-xl hover:shadow-2xl transition-all p-8 rounded-3xl border-2 border-primary items-center w-full">
           <RocketLaunchIcon className="h-16 w-16 text-primary mb-4" />
@@ -248,7 +247,9 @@ const Home: NextPage = () => {
           {/* 盲盒铸造区 */}
           <div className="flex-1 bg-gray-800 rounded-2xl p-6 border border-gray-700 hover:border-pink-500/50 transition-all">
             <h3 className="text-xl font-bold mb-4 text-pink-400">1. 获取神秘盲盒</h3>
-            <p className="text-gray-400 mb-6 text-sm">部署至 Sepolia 网络的互动式盲盒。铸造后需等待 Owner 授权方可拆封。</p>
+            <p className="text-gray-400 mb-6 text-sm">
+              部署至 Sepolia 网络的互动式盲盒。铸造后需等待 Owner 授权方可拆封。
+            </p>
             <button
               className="w-full py-4 rounded-xl bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-500 hover:to-purple-500 text-white font-black text-lg tracking-widest shadow-lg shadow-pink-500/25 active:scale-95 transition-all"
               onClick={async () => {
@@ -271,13 +272,13 @@ const Home: NextPage = () => {
                 <input
                   type="number"
                   value={targetId}
-                  onChange={(e) => setTargetId(e.target.value)}
+                  onChange={e => setTargetId(e.target.value)}
                   placeholder="ID"
                   className="w-20 bg-gray-900 border border-purple-500/50 rounded-lg p-2 text-white text-center focus:outline-none"
                 />
                 <span className="text-sm text-gray-400">输入待操作的 Token ID</span>
               </div>
-              
+
               <div className="bg-gray-900 rounded-lg p-3 mb-6 font-mono text-xs">
                 <div className="flex justify-between mb-1">
                   <span className="text-gray-500">最高权限授权:</span>
@@ -335,6 +336,8 @@ const Home: NextPage = () => {
               >
                 <figure className="px-4 pt-4">
                   {nftMetadata?.image ? (
+                    // 👇 就是这一行！告诉代码警察：这行图片标签不要管！
+                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={resolveImageUrl(nftMetadata.image)}
                       alt={nftMetadata.name || "NFT Image"}
